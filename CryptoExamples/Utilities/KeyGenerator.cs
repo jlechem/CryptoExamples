@@ -8,13 +8,8 @@ namespace CryptoExamples.Utilities
     {
         private static Random _random = new Random();
 
-        public static string GenerateKey(int length = 1028)
+        public static string GenerateKey(int length = 256)
         {
-            if (length < 1028)
-            {
-                throw new ArgumentException($"Invalid key length {length}");
-            }
-
             var result = String.Empty;
 
             for (var i = 0; i < length; i++)
@@ -24,6 +19,11 @@ namespace CryptoExamples.Utilities
             }
 
             return result;
+        }
+
+        public static byte[] GenerateByteKey(int length = 256)
+        {
+            return Encoding.UTF8.GetBytes(KeyGenerator.GenerateKey(length));
         }
 
     }
