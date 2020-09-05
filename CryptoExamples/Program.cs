@@ -1,9 +1,6 @@
 ﻿using CryptoExamples.Symmetric;
 using CryptoExamples.Utilities;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace CryptoExamples
 {
