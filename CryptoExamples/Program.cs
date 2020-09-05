@@ -15,7 +15,7 @@ namespace CryptoExamples
             {
                 try
                 {
-                    var key = KeyGenerator.GenerateByteKey(32);
+                    var key = KeyGenerator.GenerateKey(32);
 
                     var enc = new SymmetricEncryptorr();
 

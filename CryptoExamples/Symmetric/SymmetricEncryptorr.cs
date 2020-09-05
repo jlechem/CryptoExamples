@@ -9,7 +9,23 @@ namespace CryptoExamples.Symmetric
     public class SymmetricEncryptorr
     {
         /// <summary>
-        /// 
+        /// Encrypts the string as an asynchronous operation.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task<string> EncryptStringAsync(string key, string value)
+        {
+            if (key.Length != 32)
+            {
+                throw new ArgumentException("Key length must be 32 bits");
+            }
+
+            return await EncryptStringAsync(Encoding.UTF8.GetBytes(key), value);
+        }
+
+        /// <summary>
+        /// Encrypts the string as an asynchronous operation.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -46,9 +62,25 @@ namespace CryptoExamples.Symmetric
 
             return Convert.ToBase64String(array);
         }
-        
+
         /// <summary>
-        /// 
+        /// Decrypts the string as an asynchronous operation.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task<string> DecryptStringAsync(string key, string value)
+        {
+            if (key.Length != 32)
+            {
+                throw new ArgumentException("Key length must be 32 bits");
+            }
+
+            return await DecryptStringAsync(Encoding.UTF8.GetBytes(key), value);
+        }
+
+        /// <summary>
+        /// Decrypts the string as an asynchronous operation.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -78,9 +110,9 @@ namespace CryptoExamples.Symmetric
                 }
             }
         }
-    
+
         /// <summary>
-        /// 
+        /// Encrypts the file as an asynchronous operation.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="filePath"></param>
@@ -91,7 +123,7 @@ namespace CryptoExamples.Symmetric
         }
 
         /// <summary>
-        /// 
+        /// Encrypts the file as an asynchronous operation.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="fileData"></param>
