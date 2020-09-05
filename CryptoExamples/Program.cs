@@ -22,7 +22,6 @@ namespace CryptoExamples
                     var encrypted = enc.EncryptStringAsync(key, "Justin LeCheminant").Result;
 
                     Console.WriteLine(encrypted);
-                    Console.WriteLine();
 
                     var decrypted = enc.DecryptStringAsync(key, encrypted).Result;
 

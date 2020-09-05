@@ -16,6 +16,11 @@ namespace CryptoExamples.Symmetric
         /// <returns></returns>
         public async Task<string> EncryptStringAsync(byte[] key, string value)
         {
+            if(key.Length != 32)
+            {
+                throw new ArgumentException("Key length must be 32 bits");
+            }
+
             var iv = new byte[16];
 
             byte[] array;
@@ -27,17 +32,15 @@ namespace CryptoExamples.Symmetric
 
                 var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
-                using (MemoryStream memoryStream = new MemoryStream())
+                using (var memoryStream = new MemoryStream())
+                using (var cryptoStream = new CryptoStream((Stream)memoryStream, encryptor, CryptoStreamMode.Write))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, encryptor, CryptoStreamMode.Write))
+                    using (StreamWriter streamWriter = new StreamWriter((Stream)cryptoStream))
                     {
-                        using (StreamWriter streamWriter = new StreamWriter((Stream)cryptoStream))
-                        {
-                            await streamWriter.WriteAsync(value);
-                        }
-
-                        array = memoryStream.ToArray();
+                        await streamWriter.WriteAsync(value);
                     }
+
+                    array = memoryStream.ToArray();
                 }
             }
 
@@ -52,8 +55,13 @@ namespace CryptoExamples.Symmetric
         /// <returns></returns>
         public async Task<string> DecryptStringAsync(byte[] key,string value)
         {
+            if (key.Length != 32)
+            {
+                throw new ArgumentException("Key length must be 32 bits");
+            }
+
             var iv = new byte[16];
-            byte[] buffer = Convert.FromBase64String(value);
+            var buffer = Convert.FromBase64String(value);
 
             using (var aes = Aes.Create())
             {
@@ -62,15 +70,11 @@ namespace CryptoExamples.Symmetric
 
                 var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
-                using (MemoryStream memoryStream = new MemoryStream(buffer))
+                using (var memoryStream = new MemoryStream(buffer))
+                using (var cryptoStream = new CryptoStream((Stream)memoryStream, decryptor, CryptoStreamMode.Read))
+                using (var streamReader = new StreamReader((Stream)cryptoStream))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader streamReader = new StreamReader((Stream)cryptoStream))
-                        {
-                            return await streamReader.ReadToEndAsync();
-                        }
-                    }
+                    return await streamReader.ReadToEndAsync();
                 }
             }
         }
