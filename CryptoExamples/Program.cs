@@ -8,13 +8,13 @@ namespace CryptoExamples
     {
         static void Main(string[] args)
         {
+            var enc = new SymmetricEncryptorr();
+
             for (var i = 0; i < 10; i++)
             {
                 try
                 {
                     var key = KeyGenerator.GenerateByteKey(32);
-
-                    var enc = new SymmetricEncryptorr();
 
                     var encrypted = enc.EncryptStringAsync(key, "Justin LeCheminant").Result;
 
