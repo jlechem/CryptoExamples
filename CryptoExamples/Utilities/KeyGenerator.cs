@@ -22,7 +22,11 @@ namespace CryptoExamples.Utilities
 
         public static byte[] GenerateByteKey(int length = 256)
         {
-            return Encoding.UTF8.GetBytes(KeyGenerator.GenerateKey(length));
+            var result = new byte[length];
+
+            _random.NextBytes(result);
+
+            return result;
         }
 
     }
