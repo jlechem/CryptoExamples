@@ -51,7 +51,7 @@ namespace CryptoExamples.Symmetric
                 using (var memoryStream = new MemoryStream())
                 using (var cryptoStream = new CryptoStream((Stream)memoryStream, encryptor, CryptoStreamMode.Write))
                 {
-                    using (StreamWriter streamWriter = new StreamWriter((Stream)cryptoStream))
+                    using (var streamWriter = new StreamWriter((Stream)cryptoStream))
                     {
                         await streamWriter.WriteAsync(value);
                     }
