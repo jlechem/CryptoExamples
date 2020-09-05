@@ -1,6 +1,9 @@
-﻿using CryptoExamples.Symmetric;
+﻿using CryptoExamples.SHA;
+using CryptoExamples.Symmetric;
 using CryptoExamples.Utilities;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CryptoExamples
 {
@@ -8,29 +11,27 @@ namespace CryptoExamples
     {
         static void Main(string[] args)
         {
-            var enc = new SymmetricEncryptorr();
+            var words = new List<string>();
+            words.AddRange(File.ReadAllLines("c:\\words.txt"));
 
-            for (var i = 0; i < 10; i++)
+            using (var writer = File.CreateText("C:\\Words256.txt"))
             {
-                try
+                foreach (var word in words)
                 {
-                    var key = KeyGenerator.GenerateByteKey(32);
-
-                    var encrypted = enc.EncryptStringAsync(key, "Justin LeCheminant").Result;
-
-                    Console.WriteLine(encrypted);
-
-                    var decrypted = enc.DecryptStringAsync(key, encrypted).Result;
-
-                    Console.WriteLine(decrypted);
-                    Console.WriteLine();
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
+                    var hashed = ShaHash.Sha256Hash(word);
+                    writer.WriteLine($"{word}:{Convert.ToBase64String(hashed)}");
                 }
             }
+
+            using (var writer = File.CreateText("C:\\Words512.txt"))
+            {
+                foreach (var word in words)
+                {
+                    var hashed = ShaHash.Sha512Hash(word);
+                    writer.WriteLine($"{word}:{Convert.ToBase64String(hashed)}");
+                }
+            }
+
         }
     }
 }
